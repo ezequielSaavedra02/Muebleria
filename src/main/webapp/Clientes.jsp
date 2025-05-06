@@ -43,6 +43,7 @@
                 <th>Apellido</th>
                 <th>Teléfono</th>
                 <th>Email</th>
+                <th>Domicilio</th>
             </tr>
         </thead>
         <tbody>
