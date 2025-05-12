@@ -1,0 +1,108 @@
+:root {
+    --primary: #8B5A2B;       /* Marrón tronco */
+    --secondary: #fdf8f2;     /* Fondo claro tipo madera */
+    --accent: #A0522D;        /* Marrón acentuado */
+    --white: #ffffff;
+    --text: #2b1d0e;
+    --hover-bg: #f3e2d1;
+    --wood-pattern: url('../img/madera-textura.png');
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--secondary);
+    color: var(--text);
+    background-image: var(--wood-pattern);
+    background-repeat: repeat;
+    background-size: cover;
+}
+
+header {
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 2rem 1rem;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    background-image: var(--wood-pattern);
+    background-size: cover;
+}
+
+header h1 {
+    font-size: 2rem;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    padding: 3rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    background-color: var(--white);
+    border-radius: 12px;
+    padding: 2rem;
+    width: 280px;
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    border: 2px solid var(--accent);
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: perspective(1000px) translateY(-10px) rotateX(4deg);
+    box-shadow: 12px 12px 30px rgba(0, 0, 0, 0.45);
+    background-color: var(--hover-bg);
+}
+
+.card h2 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+}
+
+.card p {
+    font-size: 0.95rem;
+    color: #4b3c2d;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+footer {
+    background-color: var(--primary);
+    color: var(--white);
+    text-align: center;
+    padding: 1.5rem 1rem;
+    font-size: 0.9rem;
+    background-image: var(--wood-pattern);
+    background-size: cover;
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 90vw;
+    }
+
+    main {
+        padding: 2rem 1rem;
+    }
+}
