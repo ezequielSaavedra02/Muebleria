@@ -1,0 +1,42 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Logica;
+
+/**
+ *
+ * @author axel
+ */
+public class MateriaPrima {
+ 
+    private int id_mp;
+    private String nombre;
+
+    public MateriaPrima() {
+    }
+
+    public MateriaPrima(int id_mp, String nombre) {
+        this.id_mp = id_mp;
+        this.nombre = nombre;
+    }
+
+    public int getId_mp() {
+        return id_mp;
+    }
+
+    public void setId_mp(int id_mp) {
+        this.id_mp = id_mp;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
+    
+    
+}
