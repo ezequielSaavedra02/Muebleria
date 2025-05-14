@@ -1,0 +1,79 @@
+body {
+            background-color: var(--secondary);
+            background-image: none; /* sin textura de fondo */
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            padding: 40px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .actions button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .actions button:hover {
+            background-color: var(--accent);
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        th, td {
+            padding: 14px;
+            border: 4px solid var(--accent);
+            text-align: center;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .volver-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 26px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .volver-btn:hover {
+            background-color: var(--accent);
+        }
