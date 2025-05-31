@@ -1,6 +1,7 @@
 
 package Logica;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import javax.persistence.TemporalType;
  * @author axel
  */
 @Entity
-public class SkProducto {
+public class SkProducto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_skpro;
