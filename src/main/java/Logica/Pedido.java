@@ -2,20 +2,34 @@
 package Logica;
 
 import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+@Entity
 public class Pedido {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_pedido;
 
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
 
-private int id_pedido;
-private int id_cliente; 
-private Date fecha_pedido;
+    @Temporal(TemporalType.DATE)
+    private Date fecha_pedido;
 
     public Pedido() {
     }
 
-    public Pedido(int id_pedido, int id_cliente, Date fecha_pedido) {
+    public Pedido(int id_pedido, Cliente cliente, Date fecha_pedido) {
         this.id_pedido = id_pedido;
-        this.id_cliente = id_cliente;
+        this.cliente = cliente;
         this.fecha_pedido = fecha_pedido;
     }
 
@@ -27,12 +41,12 @@ private Date fecha_pedido;
         this.id_pedido = id_pedido;
     }
 
-    public int getId_cliente() {
-        return id_cliente;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setId_cliente(int id_cliente) {
-        this.id_cliente = id_cliente;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public Date getFecha_pedido() {
@@ -43,9 +57,6 @@ private Date fecha_pedido;
         this.fecha_pedido = fecha_pedido;
     }
 
-
-
-
-
+    
     
 }

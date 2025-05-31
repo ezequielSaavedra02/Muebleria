@@ -22,7 +22,7 @@
     <main>
         <div class="container">
             <div class="actions">
-                <button onclick="location.href='Agregar/nuevoProducto.jsp'">Agregar Producto</button>
+                <button onclick="location.href='nuevoProducto.jsp'">Agregar Producto</button>
                 <button>Modificar Producto</button>
                 <button>Eliminar Producto</button>
             </div>

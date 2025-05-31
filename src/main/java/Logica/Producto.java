@@ -4,17 +4,23 @@
  */
 package Logica;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  *
  * @author axel
  */
+@Entity
 public class Producto {
-    
-
-private int id_producto;
-private String nombre_producto; 
-private String descripcion;
-private double precio;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_producto;
+    private String nombre_producto;
+    private String descripcion;
+    private double precio;
 
     public Producto() {
     }

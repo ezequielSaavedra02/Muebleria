@@ -1,22 +1,37 @@
 
 package Logica;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
+
+@Entity
 public class DetallePedido {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_detalle;
 
+    @ManyToOne
+    @JoinColumn(name = "id_pedido")
+    private Pedido pedido;
 
-private int id_detalle;
- private int id_pedido;
- private int id_producto;
- private String cantidad;
+    @ManyToOne
+    @JoinColumn(name = "id_producto")
+    private Producto producto;
+
+    private int cantidad;
 
     public DetallePedido() {
     }
 
-    public DetallePedido(int id_detalle, int id_pedido, int id_producto, String cantidad) {
+    public DetallePedido(int id_detalle, Pedido pedido, Producto producto, int cantidad) {
         this.id_detalle = id_detalle;
-        this.id_pedido = id_pedido;
-        this.id_producto = id_producto;
+        this.pedido = pedido;
+        this.producto = producto;
         this.cantidad = cantidad;
     }
 
@@ -28,29 +43,31 @@ private int id_detalle;
         this.id_detalle = id_detalle;
     }
 
-    public int getId_pedido() {
-        return id_pedido;
+    public Pedido getPedido() {
+        return pedido;
     }
 
-    public void setId_pedido(int id_pedido) {
-        this.id_pedido = id_pedido;
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
     }
 
-    public int getId_producto() {
-        return id_producto;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setId_producto(int id_producto) {
-        this.id_producto = id_producto;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
-    public String getCantidad() {
+    public int getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(String cantidad) {
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+
+    
 
 
 

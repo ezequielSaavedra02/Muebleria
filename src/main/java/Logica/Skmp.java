@@ -1,22 +1,37 @@
 package Logica;
 
 import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+@Entity
 public class Skmp {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_kmp;
 
+    @ManyToOne
+    @JoinColumn(name = "id_mp")
+    private MateriaPrima materiaPrima;
 
-private int id_kmp;
-private int id_mp;
-private Date fecha_mov;
-private String tipo_mov;
-private int cantidad;
+    @Temporal(TemporalType.DATE)
+    private Date fecha_mov;
+
+    private String tipo_mov;
+    private int cantidad;
 
     public Skmp() {
     }
 
-    public Skmp(int id_kmp, int id_mp, Date fecha_mov, String tipo_mov, int cantidad) {
+    public Skmp(int id_kmp, MateriaPrima materiaPrima, Date fecha_mov, String tipo_mov, int cantidad) {
         this.id_kmp = id_kmp;
-        this.id_mp = id_mp;
+        this.materiaPrima = materiaPrima;
         this.fecha_mov = fecha_mov;
         this.tipo_mov = tipo_mov;
         this.cantidad = cantidad;
@@ -30,12 +45,12 @@ private int cantidad;
         this.id_kmp = id_kmp;
     }
 
-    public int getId_mp() {
-        return id_mp;
+    public MateriaPrima getMateriaPrima() {
+        return materiaPrima;
     }
 
-    public void setId_mp(int id_mp) {
-        this.id_mp = id_mp;
+    public void setMateriaPrima(MateriaPrima materiaPrima) {
+        this.materiaPrima = materiaPrima;
     }
 
     public Date getFecha_mov() {
@@ -62,10 +77,7 @@ private int cantidad;
         this.cantidad = cantidad;
     }
 
-
-    
-    
-    
+     
 
 
 
