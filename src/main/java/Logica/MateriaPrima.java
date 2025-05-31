@@ -20,13 +20,15 @@ public class MateriaPrima implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_mp;
     private String nombre;
+    private int cantidad;
 
     public MateriaPrima() {
     }
 
-    public MateriaPrima(int id_mp, String nombre) {
+    public MateriaPrima(int id_mp, String nombre, int cantidad) {
         this.id_mp = id_mp;
         this.nombre = nombre;
+        this.cantidad = cantidad;
     }
 
     public int getId_mp() {
@@ -44,6 +46,16 @@ public class MateriaPrima implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    
     
     
     

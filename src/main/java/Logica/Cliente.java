@@ -19,15 +19,17 @@ public class Cliente implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_cliente;
-    private String nombre_apellido;
+    private String nombre;
+    private String apellido;
     private String domicilio;
 
     public Cliente() {
     }
 
-    public Cliente(int id_cliente, String nombre_apellido, String domicilio) {
+    public Cliente(int id_cliente, String nombre, String apellido, String domicilio) {
         this.id_cliente = id_cliente;
-        this.nombre_apellido = nombre_apellido;
+        this.nombre = nombre;
+        this.apellido = apellido;
         this.domicilio = domicilio;
     }
 
@@ -39,12 +41,20 @@ public class Cliente implements Serializable {
         this.id_cliente = id_cliente;
     }
 
-    public String getNombre_apellido() {
-        return nombre_apellido;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombre_apellido(String nombre_apellido) {
-        this.nombre_apellido = nombre_apellido;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
     public String getDomicilio() {
@@ -54,6 +64,8 @@ public class Cliente implements Serializable {
     public void setDomicilio(String domicilio) {
         this.domicilio = domicilio;
     }
+
+    
     
     
     
