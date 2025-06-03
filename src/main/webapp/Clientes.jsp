@@ -1,10 +1,7 @@
-<%-- 
-    Document   : Clientes
-    Created on : 26 abr 2025, 19:55:33
-    Author     : edeze_b1s78wk
---%>
-
+<%@page import="Logica.Cliente"%>
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,6 +9,24 @@
     <title>Clientes - Carpintería</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/tableStyle.css">
+    <style>
+        .btn-accion {
+            margin: 0 5px;
+            padding: 5px 10px;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+        .editar-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+        }
+        .eliminar-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -22,10 +37,15 @@
     <main>
         <div class="container">
             <div class="actions">
-                <button onclick="location.href='nuevoCliente.jsp'">Nuevo Cliente</button>
-                <button>Modificar Cliente</button>
-                <button>Eliminar Cliente</button>
+                <button onclick="location.href='nuevoCliente.jsp'">Agregar Cliente</button>
+                <button onclick="location.href='SvCliente'">Actualizar Lista</button>
+                <button onclick="history.back()">Volver Atrás</button>
+                <button onclick="location.href='index.jsp'">Volver al Inicio</button>
             </div>
+
+            <%
+                List<Cliente> clientes = (List<Cliente>) request.getAttribute("clientes");
+            %>
 
             <table>
                 <thead>
@@ -36,33 +56,51 @@
                         <th>Teléfono</th>
                         <th>Email</th>
                         <th>Domicilio</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <%-- Aquí se cargarán dinámicamente los clientes --%>
-                    <% 
-                        /*
-                        List<Cliente> clientes = (List<Cliente>) request.getAttribute("clientes");
-                        if (clientes != null) {
+                    <%
+                        if (clientes == null) {
+                    %>
+                        <tr>
+                            <td colspan="7" style="text-align:center;">No se encontraron clientes en el request.</td>
+                        </tr>
+                    <%
+                        } else if (clientes.isEmpty()) {
+                    %>
+                        <tr>
+                            <td colspan="7" style="text-align:center;">No hay clientes disponibles.</td>
+                        </tr>
+                    <%
+                        } else {
                             for (Cliente c : clientes) {
                     %>
                         <tr>
-                            <td><%= c.getId() %></td>
+                            <td><%= c.getIdCliente() %></td>
                             <td><%= c.getNombre() %></td>
                             <td><%= c.getApellido() %></td>
                             <td><%= c.getTelefono() %></td>
                             <td><%= c.getEmail() %></td>
+                            <td><%= c.getDireccion() %></td>
+                            <td>
+                                <form action="SvEditarC" method="get" style="display:inline;">
+                                    <input type="hidden" name="id" value="<%= c.getIdCliente() %>">
+                                    <button type="submit" class="btn-accion editar-btn">Modificar</button>
+                                </form>
+                                <form action="SvEliminarC" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este cliente?');">
+                                    <input type="hidden" name="id" value="<%= c.getIdCliente() %>">
+                                    <button type="submit" class="btn-accion eliminar-btn">Eliminar</button>
+                                </form>
+                            </td>
                         </tr>
-                    <% 
+                    <%
                             }
                         }
-                        */
                     %>
                 </tbody>
             </table>
         </div>
-        <button class="volver-btn" onclick="location.href='index.jsp'">Volver al Inicio</button>
     </main>
 </body>
 </html>
-

@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -28,6 +29,10 @@ public class MateriaPrimaJpaController implements Serializable {
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
+    }
+    
+    public MateriaPrimaJpaController() {
+        emf = Persistence.createEntityManagerFactory("com.mycompany_Muebleria_war_1.0-SNAPSHOTPU");
     }
 
     public void create(MateriaPrima materiaPrima) {
@@ -54,7 +59,7 @@ public class MateriaPrimaJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                int id = materiaPrima.getId_mp();
+                Long id = materiaPrima.getIdMateriaPrima();
                 if (findMateriaPrima(id) == null) {
                     throw new NonexistentEntityException("The materiaPrima with id " + id + " no longer exists.");
                 }
@@ -67,7 +72,7 @@ public class MateriaPrimaJpaController implements Serializable {
         }
     }
 
-    public void destroy(int id) throws NonexistentEntityException {
+    public void destroy(Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -75,7 +80,7 @@ public class MateriaPrimaJpaController implements Serializable {
             MateriaPrima materiaPrima;
             try {
                 materiaPrima = em.getReference(MateriaPrima.class, id);
-                materiaPrima.getId_mp();
+                materiaPrima.getIdMateriaPrima();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The materiaPrima with id " + id + " no longer exists.", enfe);
             }
@@ -112,7 +117,7 @@ public class MateriaPrimaJpaController implements Serializable {
         }
     }
 
-    public MateriaPrima findMateriaPrima(int id) {
+    public MateriaPrima findMateriaPrima(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(MateriaPrima.class, id);

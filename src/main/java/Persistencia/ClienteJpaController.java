@@ -1,25 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package Persistencia;
 
 import Logica.Cliente;
-import Persistencia.exceptions.NonexistentEntityException;
 import java.io.Serializable;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import Logica.Pedido;
+import Persistencia.exceptions.NonexistentEntityException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.Persistence;
 
-/**
- *
- * @author edeze_b1s78wk
- */
+
 public class ClienteJpaController implements Serializable {
+    
 
     public ClienteJpaController(EntityManagerFactory emf) {
         this.emf = emf;
@@ -30,12 +28,38 @@ public class ClienteJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
+    public ClienteJpaController() {
+        emf = Persistence.createEntityManagerFactory("com.mycompany_Muebleria_war_1.0-SNAPSHOTPU");
+    }
+    
+    
     public void create(Cliente cliente) {
+        if (cliente.getPedidos() == null) {
+            cliente.setPedidos(new ArrayList<Pedido>());
+        }
+        
+      
+        
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            List<Pedido> attachedPedidos = new ArrayList<Pedido>();
+            for (Pedido pedidosPedidoToAttach : cliente.getPedidos()) {
+                pedidosPedidoToAttach = em.getReference(pedidosPedidoToAttach.getClass(), pedidosPedidoToAttach.getIdPedido());
+                attachedPedidos.add(pedidosPedidoToAttach);
+            }
+            cliente.setPedidos(attachedPedidos);
             em.persist(cliente);
+            for (Pedido pedidosPedido : cliente.getPedidos()) {
+                Cliente oldClienteOfPedidosPedido = pedidosPedido.getCliente();
+                pedidosPedido.setCliente(cliente);
+                pedidosPedido = em.merge(pedidosPedido);
+                if (oldClienteOfPedidosPedido != null) {
+                    oldClienteOfPedidosPedido.getPedidos().remove(pedidosPedido);
+                    oldClienteOfPedidosPedido = em.merge(oldClienteOfPedidosPedido);
+                }
+            }
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -49,12 +73,39 @@ public class ClienteJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Cliente persistentCliente = em.find(Cliente.class, cliente.getIdCliente());
+            List<Pedido> pedidosOld = persistentCliente.getPedidos();
+            List<Pedido> pedidosNew = cliente.getPedidos();
+            List<Pedido> attachedPedidosNew = new ArrayList<Pedido>();
+            for (Pedido pedidosNewPedidoToAttach : pedidosNew) {
+                pedidosNewPedidoToAttach = em.getReference(pedidosNewPedidoToAttach.getClass(), pedidosNewPedidoToAttach.getIdPedido());
+                attachedPedidosNew.add(pedidosNewPedidoToAttach);
+            }
+            pedidosNew = attachedPedidosNew;
+            cliente.setPedidos(pedidosNew);
             cliente = em.merge(cliente);
+            for (Pedido pedidosOldPedido : pedidosOld) {
+                if (!pedidosNew.contains(pedidosOldPedido)) {
+                    pedidosOldPedido.setCliente(null);
+                    pedidosOldPedido = em.merge(pedidosOldPedido);
+                }
+            }
+            for (Pedido pedidosNewPedido : pedidosNew) {
+                if (!pedidosOld.contains(pedidosNewPedido)) {
+                    Cliente oldClienteOfPedidosNewPedido = pedidosNewPedido.getCliente();
+                    pedidosNewPedido.setCliente(cliente);
+                    pedidosNewPedido = em.merge(pedidosNewPedido);
+                    if (oldClienteOfPedidosNewPedido != null && !oldClienteOfPedidosNewPedido.equals(cliente)) {
+                        oldClienteOfPedidosNewPedido.getPedidos().remove(pedidosNewPedido);
+                        oldClienteOfPedidosNewPedido = em.merge(oldClienteOfPedidosNewPedido);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                int id = cliente.getId_cliente();
+                Long id = cliente.getIdCliente();
                 if (findCliente(id) == null) {
                     throw new NonexistentEntityException("The cliente with id " + id + " no longer exists.");
                 }
@@ -67,7 +118,7 @@ public class ClienteJpaController implements Serializable {
         }
     }
 
-    public void destroy(int id) throws NonexistentEntityException {
+    public void destroy(Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -75,9 +126,14 @@ public class ClienteJpaController implements Serializable {
             Cliente cliente;
             try {
                 cliente = em.getReference(Cliente.class, id);
-                cliente.getId_cliente();
+                cliente.getIdCliente();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The cliente with id " + id + " no longer exists.", enfe);
+            }
+            List<Pedido> pedidos = cliente.getPedidos();
+            for (Pedido pedidosPedido : pedidos) {
+                pedidosPedido.setCliente(null);
+                pedidosPedido = em.merge(pedidosPedido);
             }
             em.remove(cliente);
             em.getTransaction().commit();
@@ -112,7 +168,7 @@ public class ClienteJpaController implements Serializable {
         }
     }
 
-    public Cliente findCliente(int id) {
+    public Cliente findCliente(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Cliente.class, id);
@@ -132,6 +188,16 @@ public class ClienteJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+
+    Cliente findCliente(int id) {
+    EntityManager em = getEntityManager();
+    try {
+        return em.find(Cliente.class, (long) id);
+    } finally {
+        em.close();
+    }
+    
     }
     
 }

@@ -1,44 +1,50 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Logica;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
 
-/**
- *
- * @author axel
- */
 @Entity
 public class Cliente implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_cliente;
+    private Long idCliente;
     private String nombre;
     private String apellido;
-    private String domicilio;
+    private String direccion;
+    private String telefono;
+    private String email;
+
+    // Relación 1:M con Pedido (un cliente puede tener muchos pedidos)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Pedido> pedidos;
 
     public Cliente() {
     }
 
-    public Cliente(int id_cliente, String nombre, String apellido, String domicilio) {
-        this.id_cliente = id_cliente;
+    public Cliente(Long idCliente, String nombre, String apellido, String direccion, String telefono, String email) {
+        this.idCliente = idCliente;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.domicilio = domicilio;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.email = email;
     }
 
-    public int getId_cliente() {
-        return id_cliente;
+    // Getters y Setters
+    public Long getIdCliente() {
+        return idCliente;
     }
 
-    public void setId_cliente(int id_cliente) {
-        this.id_cliente = id_cliente;
+    public void setIdCliente(Long idCliente) {
+        this.idCliente = idCliente;
     }
 
     public String getNombre() {
@@ -57,16 +63,35 @@ public class Cliente implements Serializable {
         this.apellido = apellido;
     }
 
-    public String getDomicilio() {
-        return domicilio;
+    public String getDireccion() {
+        return direccion;
     }
 
-    public void setDomicilio(String domicilio) {
-        this.domicilio = domicilio;
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
-    
-    
-    
-    
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
 }

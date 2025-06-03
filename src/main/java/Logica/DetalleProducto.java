@@ -1,4 +1,3 @@
-
 package Logica;
 
 import java.io.Serializable;
@@ -9,42 +8,49 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-/**
- *
- * @author axel
- */
 @Entity
 public class DetalleProducto implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_detalle;
+    private Long idDetalleProducto;
+    private int cantidadUtilizada;
 
+    // Relación M:1 con Producto (muchos detalles de producto pertenecen a un producto)
     @ManyToOne
-    @JoinColumn(name = "id_producto")
+    @JoinColumn(name = "producto_id") // Columna de clave foránea en la tabla DetalleProducto
     private Producto producto;
 
+    // Relación M:1 con MateriaPrima (muchos detalles de producto utilizan una materia prima)
     @ManyToOne
-    @JoinColumn(name = "id_mp")
+    @JoinColumn(name = "materia_prima_id") // Columna de clave foránea en la tabla DetalleProducto
     private MateriaPrima materiaPrima;
-
-    private int cantidad;
 
     public DetalleProducto() {
     }
 
-    public DetalleProducto(int id_detalle, Producto producto, MateriaPrima materiaPrima, int cantidad) {
-        this.id_detalle = id_detalle;
+    public DetalleProducto(Long idDetalleProducto, int cantidadUtilizada, Producto producto, MateriaPrima materiaPrima) {
+        this.idDetalleProducto = idDetalleProducto;
+        this.cantidadUtilizada = cantidadUtilizada;
         this.producto = producto;
         this.materiaPrima = materiaPrima;
-        this.cantidad = cantidad;
     }
 
-    public int getId_detalle() {
-        return id_detalle;
+    // Getters y Setters
+    public Long getIdDetalleProducto() {
+        return idDetalleProducto;
     }
 
-    public void setId_detalle(int id_detalle) {
-        this.id_detalle = id_detalle;
+    public void setIdDetalleProducto(Long idDetalleProducto) {
+        this.idDetalleProducto = idDetalleProducto;
+    }
+
+    public int getCantidadUtilizada() {
+        return cantidadUtilizada;
+    }
+
+    public void setCantidadUtilizada(int cantidadUtilizada) {
+        this.cantidadUtilizada = cantidadUtilizada;
     }
 
     public Producto getProducto() {
@@ -62,16 +68,4 @@ public class DetalleProducto implements Serializable {
     public void setMateriaPrima(MateriaPrima materiaPrima) {
         this.materiaPrima = materiaPrima;
     }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    
-
-
 }

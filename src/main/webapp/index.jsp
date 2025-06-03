@@ -13,7 +13,7 @@
 </header>
 
 <main>
-    <a href="Productos.jsp">
+    <a href="svProducto">
         <div class="card">
             <h2>🛠 Productos</h2>
             <p>Gestionar productos disponibles.</p>
@@ -27,21 +27,16 @@
         </div>
     </a>
 
-    <a href="Pedidos.jsp">
+    <a href="SvPedidos">
         <div class="card">
             <h2>📝 Pedidos</h2>
             <p>Registrar nuevos pedidos de clientes.</p>
         </div>
     </a>
 
-    <a href="Entregas.jsp">
-        <div class="card">
-            <h2>🚚 Entregas</h2>
-            <p>Control de entregas de productos.</p>
-        </div>
-    </a>
+    
 
-    <a href="MateriaPrima.jsp">
+    <a href="svMPAgregar">
         <div class="card">
             <h2>📦 Materia Prima</h2>
             <p>Stock, compra y retiro de materiales.</p>

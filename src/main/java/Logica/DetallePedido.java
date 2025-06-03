@@ -1,4 +1,3 @@
-
 package Logica;
 
 import java.io.Serializable;
@@ -9,39 +8,59 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-
 @Entity
 public class DetallePedido implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_detalle;
+    private Long idDetallePedido;
+    private int cantidad;
+    private double subtotal;
 
+    // Relación M:1 con Pedido (muchos detalles de pedido pertenecen a un pedido)
     @ManyToOne
-    @JoinColumn(name = "id_pedido")
+    @JoinColumn(name = "pedido_id") // Columna de clave foránea en la tabla DetallePedido
     private Pedido pedido;
 
+    // Relación M:1 con Producto (muchos detalles de pedido se refieren a un producto)
     @ManyToOne
-    @JoinColumn(name = "id_producto")
+    @JoinColumn(name = "producto_id") // Columna de clave foránea en la tabla DetallePedido
     private Producto producto;
-
-    private int cantidad;
 
     public DetallePedido() {
     }
 
-    public DetallePedido(int id_detalle, Pedido pedido, Producto producto, int cantidad) {
-        this.id_detalle = id_detalle;
+    public DetallePedido(Long idDetallePedido, int cantidad, double subtotal, Pedido pedido, Producto producto) {
+        this.idDetallePedido = idDetallePedido;
+        this.cantidad = cantidad;
+        this.subtotal = subtotal;
         this.pedido = pedido;
         this.producto = producto;
+    }
+
+    // Getters y Setters
+    public Long getIdDetallePedido() {
+        return idDetallePedido;
+    }
+
+    public void setIdDetallePedido(Long idDetallePedido) {
+        this.idDetallePedido = idDetallePedido;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
 
-    public int getId_detalle() {
-        return id_detalle;
+    public double getSubtotal() {
+        return subtotal;
     }
 
-    public void setId_detalle(int id_detalle) {
-        this.id_detalle = id_detalle;
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
     }
 
     public Pedido getPedido() {
@@ -59,17 +78,4 @@ public class DetallePedido implements Serializable {
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    
-
-
-
 }

@@ -1,45 +1,77 @@
-
 package Logica;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 public class Pedido implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_pedido;
+    private Long idPedido;
+
+    private LocalDate fechaPedido;
+    private double total;
+    private int cantidad;  // Cantidad del producto en el pedido
 
     @ManyToOne
-    @JoinColumn(name = "id_cliente")
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @Temporal(TemporalType.DATE)
-    private Date fecha_pedido;
+    @ManyToOne
+    @JoinColumn(name = "producto_id")
+    private Producto producto;
 
     public Pedido() {
     }
 
-    public Pedido(int id_pedido, Cliente cliente, Date fecha_pedido) {
-        this.id_pedido = id_pedido;
+    public Pedido(Long idPedido, LocalDate fechaPedido, double total, int cantidad, Cliente cliente, Producto producto) {
+        this.idPedido = idPedido;
+        this.fechaPedido = fechaPedido;
+        this.total = total;
+        this.cantidad = cantidad;
         this.cliente = cliente;
-        this.fecha_pedido = fecha_pedido;
+        this.producto = producto;
     }
 
-    public int getId_pedido() {
-        return id_pedido;
+    // Getters y Setters
+
+    public Long getIdPedido() {
+        return idPedido;
     }
 
-    public void setId_pedido(int id_pedido) {
-        this.id_pedido = id_pedido;
+    public void setIdPedido(Long idPedido) {
+        this.idPedido = idPedido;
+    }
+
+    public LocalDate getFechaPedido() {
+        return fechaPedido;
+    }
+
+    public void setFechaPedido(LocalDate fechaPedido) {
+        this.fechaPedido = fechaPedido;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
     public Cliente getCliente() {
@@ -50,14 +82,11 @@ public class Pedido implements Serializable {
         this.cliente = cliente;
     }
 
-    public Date getFecha_pedido() {
-        return fecha_pedido;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setFecha_pedido(Date fecha_pedido) {
-        this.fecha_pedido = fecha_pedido;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
-
-    
-    
 }

@@ -5,12 +5,14 @@
 package Persistencia;
 
 import Logica.DetalleProducto;
-import Persistencia.exceptions.NonexistentEntityException;
 import java.io.Serializable;
+import Logica.Producto;
+import Persistencia.exceptions.NonexistentEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -29,13 +31,26 @@ public class DetalleProductoJpaController implements Serializable {
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
+    
+    public DetalleProductoJpaController() {
+        emf = Persistence.createEntityManagerFactory("com.mycompany_Muebleria_war_1.0-SNAPSHOTPU");
+    }
 
     public void create(DetalleProducto detalleProducto) {
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Producto producto = detalleProducto.getProducto();
+            if (producto != null) {
+                producto = em.getReference(producto.getClass(), producto.getIdProducto());
+                detalleProducto.setProducto(producto);
+            }
             em.persist(detalleProducto);
+            if (producto != null) {
+                producto.getComponentes().add(detalleProducto);
+                producto = em.merge(producto);
+            }
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -49,12 +64,27 @@ public class DetalleProductoJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            DetalleProducto persistentDetalleProducto = em.find(DetalleProducto.class, detalleProducto.getIdDetalleProducto());
+            Producto productoOld = persistentDetalleProducto.getProducto();
+            Producto productoNew = detalleProducto.getProducto();
+            if (productoNew != null) {
+                productoNew = em.getReference(productoNew.getClass(), productoNew.getIdProducto());
+                detalleProducto.setProducto(productoNew);
+            }
             detalleProducto = em.merge(detalleProducto);
+            if (productoOld != null && !productoOld.equals(productoNew)) {
+                productoOld.getComponentes().remove(detalleProducto);
+                productoOld = em.merge(productoOld);
+            }
+            if (productoNew != null && !productoNew.equals(productoOld)) {
+                productoNew.getComponentes().add(detalleProducto);
+                productoNew = em.merge(productoNew);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                int id = detalleProducto.getId_detalle();
+                Long id = detalleProducto.getIdDetalleProducto();
                 if (findDetalleProducto(id) == null) {
                     throw new NonexistentEntityException("The detalleProducto with id " + id + " no longer exists.");
                 }
@@ -67,7 +97,7 @@ public class DetalleProductoJpaController implements Serializable {
         }
     }
 
-    public void destroy(int id) throws NonexistentEntityException {
+    public void destroy(Long id) throws NonexistentEntityException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -75,9 +105,14 @@ public class DetalleProductoJpaController implements Serializable {
             DetalleProducto detalleProducto;
             try {
                 detalleProducto = em.getReference(DetalleProducto.class, id);
-                detalleProducto.getId_detalle();
+                detalleProducto.getIdDetalleProducto();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The detalleProducto with id " + id + " no longer exists.", enfe);
+            }
+            Producto producto = detalleProducto.getProducto();
+            if (producto != null) {
+                producto.getComponentes().remove(detalleProducto);
+                producto = em.merge(producto);
             }
             em.remove(detalleProducto);
             em.getTransaction().commit();
@@ -112,7 +147,7 @@ public class DetalleProductoJpaController implements Serializable {
         }
     }
 
-    public DetalleProducto findDetalleProducto(int id) {
+    public DetalleProducto findDetalleProducto(Long id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(DetalleProducto.class, id);

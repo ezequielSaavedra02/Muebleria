@@ -38,16 +38,21 @@
 </header>
 
 <main>
-    <form action="GuardarMateriaPrima" method="post">
-        <input type="text" name="nombre" placeholder="Nombre de la Materia Prima" required>
-        <input type="text" name="unidad" placeholder="Unidad de medida (ej: kg, m, litros)" required>
-        <input type="number" name="stock" placeholder="Cantidad inicial" required>
+    <form action="svMPAgregar" method="post">
+    <label>Nombre:</label>
+    <input type="text" name="nombre" required><br>
 
-        <button type="submit">Guardar Materia Prima</button>
-    </form>
+    <label>Costo Unitario:</label>
+    <input type="number" name="costoUnitario" step="0.01" required><br>
+
+    <label>Stock:</label>
+    <input type="number" name="stock" required><br>
+
+    <button type="submit">Registrar Materia Prima</button>
+</form>
 
     <div class="volver">
-        <button onclick="location.href='MateriaPrima.jsp'">Volver atrás</button>
+        <button onclick="location.href='svMPAgregar'">Volver atrás</button>
     </div>
 </main>
 

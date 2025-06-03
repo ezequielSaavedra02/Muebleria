@@ -1,54 +1,62 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Logica;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-/**
- *
- * @author axel
- */
 @Entity
 public class Producto implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_producto;
-    private String nombre_producto;
+    private Long idProducto;
+
+    private String nombre;
     private String descripcion;
-    private double precio;
-    private int cantidad;
+    private double precioUnitario;
+    private int stock;
+
+    // Relación 1:M con DetalleProducto (si lo usás)
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DetalleProducto> componentes;
+
+    // Relación 1:M con Pedido (un producto puede estar en muchos pedidos)
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Pedido> pedidos;
 
     public Producto() {
     }
 
-    public Producto(int id_producto, String nombre_producto, String descripcion, double precio, int cantidad) {
-        this.id_producto = id_producto;
-        this.nombre_producto = nombre_producto;
+    public Producto(Long idProducto, String nombre, String descripcion, double precioUnitario, int stock) {
+        this.idProducto = idProducto;
+        this.nombre = nombre;
         this.descripcion = descripcion;
-        this.precio = precio;
-        this.cantidad = cantidad;
+        this.precioUnitario = precioUnitario;
+        this.stock = stock;
     }
 
-    public int getId_producto() {
-        return id_producto;
+    // Getters y Setters
+
+    public Long getIdProducto() {
+        return idProducto;
     }
 
-    public void setId_producto(int id_producto) {
-        this.id_producto = id_producto;
+    public void setIdProducto(Long idProducto) {
+        this.idProducto = idProducto;
     }
 
-    public String getNombre_producto() {
-        return nombre_producto;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombre_producto(String nombre_producto) {
-        this.nombre_producto = nombre_producto;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getDescripcion() {
@@ -59,25 +67,35 @@ public class Producto implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public double getPrecio() {
-        return precio;
+    public double getPrecioUnitario() {
+        return precioUnitario;
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
+    public void setPrecioUnitario(double precioUnitario) {
+        this.precioUnitario = precioUnitario;
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public int getStock() {
+        return stock;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
-    
+    public List<DetalleProducto> getComponentes() {
+        return componentes;
+    }
 
+    public void setComponentes(List<DetalleProducto> componentes) {
+        this.componentes = componentes;
+    }
 
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
 
-
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
 }

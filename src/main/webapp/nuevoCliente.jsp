@@ -38,11 +38,12 @@
 </header>
 
 <main>
-    <form action="GuardarCliente" method="post">
+    <form action="SvCliente" method="POST">
         <input type="text" name="nombre" placeholder="Nombre" required>
         <input type="text" name="apellido" placeholder="Apellido" required>
-        <input type="text" name="telefono" placeholder="Teléfono" required>
-        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="telefono" placeholder="Telefono" required>
+        <input type="text" name="direccion" placeholder="Direccion" required>
+         <input type="email" name="email" placeholder="Email" required>
 
         <button type="submit">Guardar Cliente</button>
     </form>

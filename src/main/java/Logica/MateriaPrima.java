@@ -9,34 +9,46 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany; // Si MateriaPrima tiene muchos productos
 
-/**
- *
- * @author axel
- */
+// Importar List si se usa una colección
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+
 @Entity
 public class MateriaPrima implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_mp;
+    private Long idMateriaPrima;
     private String nombre;
-    private int cantidad;
+    private double costoUnitario;
+    private int stock;
+
+    // Relación Many-to-Many con Producto, a través de la tabla DetalleProducto
+    // Esto se maneja mejor en DetalleProducto, por lo que aquí no es necesario
+    // Si quisieras acceder a los productos directamente desde MateriaPrima,
+    // sería @ManyToMany(mappedBy = "materiasPrimas")
+    // private List<Producto> productos;
 
     public MateriaPrima() {
     }
 
-    public MateriaPrima(int id_mp, String nombre, int cantidad) {
-        this.id_mp = id_mp;
+    public MateriaPrima(Long idMateriaPrima, String nombre, double costoUnitario, int stock) {
+        this.idMateriaPrima = idMateriaPrima;
         this.nombre = nombre;
-        this.cantidad = cantidad;
+        this.costoUnitario = costoUnitario;
+        this.stock = stock;
     }
 
-    public int getId_mp() {
-        return id_mp;
+    // Getters y Setters
+    public Long getIdMateriaPrima() {
+        return idMateriaPrima;
     }
 
-    public void setId_mp(int id_mp) {
-        this.id_mp = id_mp;
+    public void setIdMateriaPrima(Long idMateriaPrima) {
+        this.idMateriaPrima = idMateriaPrima;
     }
 
     public String getNombre() {
@@ -47,16 +59,19 @@ public class MateriaPrima implements Serializable {
         this.nombre = nombre;
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public double getCostoUnitario() {
+        return costoUnitario;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public void setCostoUnitario(double costoUnitario) {
+        this.costoUnitario = costoUnitario;
     }
 
-    
-    
-    
-    
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
 }
